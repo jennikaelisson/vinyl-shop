@@ -23,24 +23,26 @@ app.get("/create-order", (request, response) => {
         email: "Jennika@hotmail.com",
         firstName: "Jennika",
         lastName: "Elisson",
-        address: "Björkvägen 39"
+        address: "Björkvägen 39",
       };
 
       customerCollection.insertOne(customer);
 
       let user = {
         email: "Jennika@hotmail.com",
-        password: "123"
+        password: "123",
       };
 
       userCollection.insertOne(user);
 
       return orderCollection
         .insertOne({
-          customer: { email: customer.email,
+          customer: {
+            email: customer.email,
             firstName: customer.firstName,
             lastName: customer.lastName,
-            address: customer.address },
+            address: customer.address,
+          },
           totalPrice: 1003,
           orderDate: "2024-04-17",
           paymentId: "j2424",
@@ -50,14 +52,18 @@ app.get("/create-order", (request, response) => {
           console.log("Order created successfully");
           response.json({ message: "Order created successfully" });
         });
-    }).catch((error) => {
-        console.error("Error creating order:", error);
-        response.status(500).json({ error: "Error creating order" });
-      })
+    })
+    .catch((error) => {
+      console.error("Error creating order:", error);
+      response.status(500).json({ error: "Error creating order" });
+    })
     .finally(() => {
       client.close();
     });
 });
 
-app.listen(3000);
+// app.get("/add-product", (request, response) => {
 
+// });
+
+app.listen(3000);
