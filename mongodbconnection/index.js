@@ -5,11 +5,9 @@ let express = require("express");
 
 let app = express();
 
-app.get("/", (request, response) => {
+app.get("/create-order", (request, response) => {
   let url = "mongodb://localhost:27017";
   let client = new mongodb.MongoClient(url);
-
-  // console.log(client);
 
   client
     .connect()
@@ -17,33 +15,49 @@ app.get("/", (request, response) => {
       console.log("Connected");
 
       let db = client.db("webshop");
-      let collection = db.collection("products");
+      let orderCollection = db.collection("orders");
+      let customerCollection = db.collection("customers");
+      let userCollection = db.collection("users");
 
-    //   return collection
-    //     .insertMany([
-    //       { a: 1 },
-    //       {
-    //         artist: "Queen",
-    //         title: "Killer Queen",
-    //         price: 250,
-    //         releaseYear: 1976,
-    //       },
-    //     ])
-    //     .then(() => {
-    //       console.log("inserted");
+      let customer = {
+        email: "Jennika@hotmail.com",
+        firstName: "Jennika",
+        lastName: "Elisson",
+        address: "Björkvägen 39"
+      };
 
-          return collection
-            .find({ artist: "Kate Bush" })
-            .toArray()
-            .then((results) => {
-              console.log("Found", results);
-              response.json(results);
-            });
-        
-    })
+      customerCollection.insertOne(customer);
+
+      let user = {
+        email: "Jennika@hotmail.com",
+        password: "123"
+      };
+
+      userCollection.insertOne(user);
+
+      return orderCollection
+        .insertOne({
+          customer: { email: customer.email,
+            firstName: customer.firstName,
+            lastName: customer.lastName,
+            address: customer.address },
+          totalPrice: 1003,
+          orderDate: "2024-04-17",
+          paymentId: "j2424",
+          status: "In process",
+        })
+        .then(() => {
+          console.log("Order created successfully");
+          response.json({ message: "Order created successfully" });
+        });
+    }).catch((error) => {
+        console.error("Error creating order:", error);
+        response.status(500).json({ error: "Error creating order" });
+      })
     .finally(() => {
       client.close();
     });
- });
+});
 
 app.listen(3000);
+
