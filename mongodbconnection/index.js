@@ -62,8 +62,68 @@ app.get("/create-order", (request, response) => {
     });
 });
 
-// app.get("/add-product", (request, response) => {
+app.get("/add-product", (request, response) => {
+    let url = "mongodb://localhost:27017";
+    let client = new mongodb.MongoClient(url);
+  
+    client
+      .connect()
+      .then(() => {
+        console.log("Connected");
+  
+        let db = client.db("webshop");
+        let collection = db.collection("products");
+  
+        return collection
+          .insertMany([
+            {
+              artist: "The Beatles",
+              title: "Sgt. Pepper's Lonely Hearts Club Band",
+              price: 400,
+              releaseYear: 1967,
+            },
+            {
+              artist: "Queen",
+              title: "Killer Queen",
+              price: 250,
+              releaseYear: 1976, 
+            },
+          ])
+          .then(() => {
+            console.log("Inserted");
+            response.json({ message: "Inserted " });
+          });
+      })
+      .finally(() => {
+        client.close();
+      });
+  });
+  
 
-// });
+// app.get("/show-product", (request, response) => {
+//     let url = "mongodb://localhost:27017";
+//     let client = new mongodb.MongoClient(url);
+    
+//     client
+//       .connect()
+//       .then(() => {
+//         console.log("Connected");
+  
+//         let db = client.db("webshop");
+//         let collection = db.collection("products");
+  
+//             return collection
+//               .find({ artist: "Kate Bush" })
+//               .toArray()
+//               .then((results) => {
+//                 console.log("Found", results);
+//                 response.json(results);
+//               });
+//           });
+//       })
+//       .finally(() => {
+//         client.close();
+//       });
+
 
 app.listen(3000);
