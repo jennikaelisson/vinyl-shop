@@ -6,10 +6,13 @@ let DatabaseConnection = require("./src/database/DatabaseConnection")
 
 let url = "mongodb://localhost:27017";
 
-let databaseConnection = new DatabaseConnection(url);
+DatabaseConnection.getInstance()
 
-global.databaseConnection = databaseConnection;
+// console.log(DatabaseConnection.getInstance());
 
+// DatabaseConnection.getInstance().setUrl(url)
+
+// console.log(DatabaseConnection.getInstance());
 
 
 // let app = express();
