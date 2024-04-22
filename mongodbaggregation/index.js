@@ -1,12 +1,13 @@
 console.log("index.js");
 
-let mongodb = require("mongodb");
 let express = require("express");
-let DatabaseConnection = require("./src/database/DatabaseConnection")
+let DatabaseConnection = require("./src/database/DatabaseConnection");
 
 let url = "mongodb://localhost:27017";
 
-DatabaseConnection.getInstance()
+DatabaseConnection.getInstance().setUrl(url);
+
+// DatabaseConnection.getInstance()
 
 // console.log(DatabaseConnection.getInstance());
 
@@ -14,85 +15,34 @@ DatabaseConnection.getInstance()
 
 // console.log(DatabaseConnection.getInstance());
 
+let app = express();
 
-// let app = express();
+app.use(express.json());
+app.use(express.urlencoded());
 
-// app.get("/orders", (request, response) => {
-//   let url = "mongodb://localhost:27017";
-//   let client = new mongodb.MongoClient(url);
+app.get("/", async (request, response) => {
+  let orders = await DatabaseConnection.getInstance().getAllOrders();
+  response.json(orders);
+});
 
-//   client
-//     .connect()
-//     .then(async () => {
-//       console.log("Connected");
+app.get("/products", async (request, response) => {
+  //JETODO connect to database$
+  response.json([{"id": 1, "name": "Product1"}, {"id": 2, "name": "Product2"}, {"id": 3, "name": "Product3"}]);
+});
 
-//       let db = client.db("webshop");
-//       let orderCollection = db.collection("orders");
+app.post("/create-new-order", async (request, response) => {
+  let customer = await DatabaseConnection.getInstance().getOrCreateCustomer(
+    request.body.email,
+    request.body.name,
+    request.body.address
+  );
+  let order = await DatabaseConnection.getInstance().getOrder(
+    request.lineItems,
+    customer
+  );
 
-//       let pipeline = [
-//         {
-//           $lookup: {
-//             from: "lineItems",
-//             localField: "orderId",
-//             foreignField: "id",
-//             as: "lineItems",
-//             pipeline: [
-//               {
-//                 $lookup: {
-//                   from: "products",
-//                   localField: "id",
-//                   foreignField: "product",
-//                   as: "linkedProduct",
-//                 },
-//               },
-//               {
-//                 $addFields: {
-//                   linkedProduct: {
-//                     $first: "$linkedProduct",
-//                   },
-//                 },
-//               },
-//             ],
-//           },
-//         },
-//         {
-//           $lookup: {
-//             from: "customers",
-//             localField: "id",
-//             foreignField: "customer",
-//             as: "linkedCustomer",
-//           },
-//         },
-//         {
-//           $addFields: {
-//             linkedCustomer: {
-//               $first: "$linkedCustomer",
-//             },
-//             calculatedTotal: {
-//               $sum: "$lineItems.totalPrice",
-//             },
-//           },
-//         },
-//       ];
-
-//       let aggregate = orderCollection.aggregate(pipeline);
-
-//       let orders = [];
-
-
-//       for await (let document of aggregate) {
-//         orders.push(document)
-//       }
-
-//       return orders;
-
-//     }).then((orders) => {
-//       response.json(orders);
-//     })
-//     .finally(() => {
-//       client.close();
-//     });
-// });
+  response.json(order);
+});
 
 // // app.get("/add-product", (request, response) => {
 // //     let url = "mongodb://localhost:27017";
@@ -133,4 +83,4 @@ DatabaseConnection.getInstance()
 
 // // Här kan du lägga till fler routes om du behöver
 
-// app.listen(3000);
+app.listen(3000);
