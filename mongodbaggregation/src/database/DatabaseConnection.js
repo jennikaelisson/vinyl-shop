@@ -94,67 +94,158 @@ class DatabaseConnection {
     );
   }
 
+  async getProducts() {
+    await this.connect();
+
+    let db = this.client.db("webshop");
+    let collection = db.collection("products");
+
+    let pipeline = [
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category",
+          },
+        },
+        {
+          $addFields: {
+            category: {
+              $first: "$category",
+            },
+          },
+        },
+      ];
+
+    let documents = collection.aggregate(pipeline);
+    let returnArray = [];
+
+    for await(let document of documents) {
+        returnArray.push(document)
+    }
+
+    return returnArray;
+  }
+
   async getAllOrders() {
     await this.connect();
 
     let db = this.client.db("webshop");
-    let orderCollection = db.collection("orders");
+    let collection = db.collection("orders");
 
     let pipeline = [
-      {
-        $lookup: {
-          from: "lineItems",
-          localField: "orderId",
-          foreignField: "id",
-          as: "lineItems",
-          pipeline: [
-            {
-              $lookup: {
-                from: "products",
-                localField: "id",
-                foreignField: "product",
-                as: "linkedProduct",
-              },
-            },
-            {
-              $addFields: {
-                linkedProduct: {
-                  $first: "$linkedProduct",
+        {
+          $lookup: {
+            from: "lineItems",
+            localField: "_id",
+            foreignField: "order",
+            as: "lineItems",
+            pipeline: [
+              {
+                $lookup: {
+                  from: "products",
+                  localField: "product",
+                  foreignField: "_id",
+                  as: "product",
                 },
               },
+              {
+                $addFields: {
+                  product: {
+                    $first: "$product",
+                  },
+                },
+              },
+            ],
+          },
+        },
+        {
+          $lookup: {
+            from: "customers",
+            localField: "customer",
+            foreignField: "_id",
+            as: "customer",
+          },
+        },
+        {
+          $addFields: {
+            customer: {
+              $first: "$customer",
             },
-          ],
-        },
-      },
-      {
-        $lookup: {
-          from: "customers",
-          localField: "id",
-          foreignField: "customer",
-          as: "linkedCustomer",
-        },
-      },
-      {
-        $addFields: {
-          linkedCustomer: {
-            $first: "$linkedCustomer",
-          },
-          calculatedTotal: {
-            $sum: "$lineItems.totalPrice",
           },
         },
-      },
-    ];
+      ];
 
-    let aggregate = orderCollection.aggregate(pipeline);
+    let documents = collection.aggregate(pipeline);
+    let returnArray = [];
 
-    let orders = [];
-
-    for await (let document of aggregate) {
-      orders.push(document);
+    for await(let document of documents) {
+        returnArray.push(document)
     }
 
-    return orders;
+    return returnArray;
+
+    // await this.connect();
+
+    // let db = this.client.db("webshop");
+    // let collection = db.collection("orders");
+
+    // let pipeline = [
+    //   {
+    //     $lookup: {
+    //       from: "lineItems",
+    //       localField: "orderId",
+    //       foreignField: "id",
+    //       as: "lineItems",
+    //       pipeline: [
+    //         {
+    //           $lookup: {
+    //             from: "products",
+    //             localField: "id",
+    //             foreignField: "product",
+    //             as: "linkedProduct",
+    //           },
+    //         },
+    //         {
+    //           $addFields: {
+    //             linkedProduct: {
+    //               $first: "$linkedProduct",
+    //             },
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "customers",
+    //       localField: "id",
+    //       foreignField: "customer",
+    //       as: "linkedCustomer",
+    //     },
+    //   },
+    //   {
+    //     $addFields: {
+    //       linkedCustomer: {
+    //         $first: "$linkedCustomer",
+    //       },
+    //       calculatedTotal: {
+    //         $sum: "$lineItems.totalPrice",
+    //       },
+    //     },
+    //   },
+    // ];
+
+    // let aggregate = collection.aggregate(pipeline);
+
+    // let orders = [];
+
+    // for await (let document of aggregate) {
+    //   orders.push(document);
+    // }
+
+    // return orders;
   }
 
   async getOrCreateCustomer(email, name, address) {

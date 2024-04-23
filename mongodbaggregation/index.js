@@ -20,35 +20,50 @@ let app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.get("/", async (request, response) => {
+app.get("/orders", async (request, response) => {
   let orders = await DatabaseConnection.getInstance().getAllOrders();
   response.json(orders);
 });
 
+// app.get("/", async (request, response) => {
+//   let orders = await DatabaseConnection.getInstance().getAllOrders();
+//   response.json(orders);
+// });
+
 app.get("/products", async (request, response) => {
-  //JETODO connect to database$
-  response.json([{"id": 1, "name": "Product1"}, {"id": 2, "name": "Product2"}, {"id": 3, "name": "Product3"}]);
+  let products = await DatabaseConnection.getInstance().getProducts();
+
+  response.json(products);
 });
 
-app.post("/create-new-order", async (request, response) => { // JETODO - ej klar
-// JETODO create customer 
-  let orderId = await DatabaseConnection.getInstance().saveOrder(request.body.lineItems, request.body.email)
+app.post("/create-new-order", async (request, response) => {
+  // JETODO - ej klar
+  // JETODO create customer
+  let orderId = await DatabaseConnection.getInstance().saveOrder(
+    request.body.lineItems,
+    request.body.email
+  );
 
-  response.json({"id": orderId});
+  response.json({ id: orderId });
 });
 
-app.post("/products", async (request, response) => { // JETODO - ej klar
-    let id = await DatabaseConnection.getInstance().createProduct();
-  
-    response.json({"id": id});
-  });
+app.post("/products", async (request, response) => {
+  // JETODO - ej klar
+  let id = await DatabaseConnection.getInstance().createProduct();
+  await DatabaseConnection.getInstance().updateProduct(id, request.body);
 
-  app.post("/products/:id", async (request, response) => { // JETODO - ej klar
-    let id = await DatabaseConnection.getInstance().updateProduct(request.params.id, request.body);
-  
-    response.json({"id": request.params.id});
-  });
+  response.json({ id: id });
+});
 
+app.post("/products/:id", async (request, response) => {
+  // JETODO - ej klar
+  await DatabaseConnection.getInstance().updateProduct(
+    request.params.id,
+    request.body
+  );
+
+  response.json({ id: request.params.id });
+});
 
 // app.post("/create-new-order", async (request, response) => { // JETODO - ej klar
 //   let customer = await DatabaseConnection.getInstance().getOrCreateCustomer(
