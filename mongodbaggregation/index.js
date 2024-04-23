@@ -1,34 +1,23 @@
 console.log("index.js");
 
 let express = require("express");
+let cors = require("cors");
 let DatabaseConnection = require("./src/database/DatabaseConnection");
 
 let url = "mongodb://localhost:27017";
 
 DatabaseConnection.getInstance().setUrl(url);
 
-// DatabaseConnection.getInstance()
-
-// console.log(DatabaseConnection.getInstance());
-
-// DatabaseConnection.getInstance().setUrl(url)
-
-// console.log(DatabaseConnection.getInstance());
-
 let app = express();
 
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded());
 
 app.get("/orders", async (request, response) => {
   let orders = await DatabaseConnection.getInstance().getAllOrders();
   response.json(orders);
 });
-
-// app.get("/", async (request, response) => {
-//   let orders = await DatabaseConnection.getInstance().getAllOrders();
-//   response.json(orders);
-// });
 
 app.get("/products", async (request, response) => {
   let products = await DatabaseConnection.getInstance().getProducts();
