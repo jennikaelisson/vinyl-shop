@@ -30,19 +30,39 @@ app.get("/products", async (request, response) => {
   response.json([{"id": 1, "name": "Product1"}, {"id": 2, "name": "Product2"}, {"id": 3, "name": "Product3"}]);
 });
 
-app.post("/create-new-order", async (request, response) => {
-  let customer = await DatabaseConnection.getInstance().getOrCreateCustomer(
-    request.body.email,
-    request.body.name,
-    request.body.address
-  );
-  let order = await DatabaseConnection.getInstance().getOrder(
-    request.lineItems,
-    customer
-  );
+app.post("/create-new-order", async (request, response) => { // JETODO - ej klar
+// JETODO create customer 
+  let orderId = await DatabaseConnection.getInstance().saveOrder(request.body.lineItems, request.body.email)
 
-  response.json(order);
+  response.json({"id": orderId});
 });
+
+app.post("/products", async (request, response) => { // JETODO - ej klar
+    let id = await DatabaseConnection.getInstance().createProduct();
+  
+    response.json({"id": id});
+  });
+
+  app.post("/products/:id", async (request, response) => { // JETODO - ej klar
+    let id = await DatabaseConnection.getInstance().updateProduct(request.params.id, request.body);
+  
+    response.json({"id": request.params.id});
+  });
+
+
+// app.post("/create-new-order", async (request, response) => { // JETODO - ej klar
+//   let customer = await DatabaseConnection.getInstance().getOrCreateCustomer(
+//     request.body.email,
+//     request.body.name,
+//     request.body.address
+//   );
+//   let order = await DatabaseConnection.getInstance().getOrder(
+//     request.lineItems,
+//     customer
+//   );
+
+//   response.json(order);
+// });
 
 // // app.get("/add-product", (request, response) => {
 // //     let url = "mongodb://localhost:27017";
