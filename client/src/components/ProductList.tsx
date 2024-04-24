@@ -54,9 +54,9 @@ const ProductList = () => {
             <h3>{product.artist}</h3>
             <h4>{product.title}</h4>
             {/* Uncomment the following lines if you have image URLs */}
-            {/* <img src={product.image} alt="Product image" /> */}
-            <h4>{product.price / 100} kr</h4>
-            <p>{product.releaseYear}</p>
+            <img src={product.image} alt="Product image" />
+            <h4>Price: {product.price} kr</h4>
+            <p>Release year: {product.releaseYear}</p>
           </div>
         ))
       )}

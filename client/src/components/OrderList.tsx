@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 interface IOrder {
     _id: string;
     totalPrice: number;
-    orderDate: Date;
+    orderDate: string;
     paymentId: string;
     status: string;
     lineItems: ILineItems[];
@@ -18,12 +18,12 @@ interface ILineItems {
 }
 
 const OrderList = () => {
-  const [products, setProducts] = useState<IOrder[]>([]);
+  const [orders, setOrders] = useState<IOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<string | null>(null);
 
   useEffect(() => {
-    const gatherProducts = async () => {
+    const gatherOrders = async () => {
       try {
         const response = await fetch("http://localhost:3000/orders");
         if (!response.ok) {
@@ -31,14 +31,14 @@ const OrderList = () => {
         }
         const data = await response.json();
         console.log(data);
-        setProducts(data);
+        setOrders(data);
       } catch (error) {
         setErrors(errors);
       } finally {
         setLoading(false);
       }
     };
-    gatherProducts();
+    gatherOrders();
   }, []);
 
   if (loading) {
@@ -51,17 +51,17 @@ const OrderList = () => {
 
   return (
     <div>
-      {products?.length === 0 ? (
-        <div>No products available</div>
+      {orders?.length === 0 ? (
+        <div>No orders available</div>
       ) : (
-        products?.map((product: IOrder) => (
-          <div key={product._id}>
-            <h3>{product._id}</h3>
-            <h4>{product.tota}</h4>
+        orders?.map((order: IOrder) => (
+          <div key={order._id}>
+            <h3>Confirmation number {order._id}</h3>
+            <h4>Total amount: {order.totalPrice} kr</h4>
             {/* Uncomment the following lines if you have image URLs */}
             {/* <img src={product.image} alt="Product image" /> */}
-            <h4>{product.price / 100} kr</h4>
-            <p>{product.releaseYear}</p>
+            <h4>Date: {order.orderDate} </h4>
+            <p>Delivery status: {order.status}</p>
           </div>
         ))
       )}
