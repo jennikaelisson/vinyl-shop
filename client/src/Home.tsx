@@ -3,18 +3,17 @@ import './App.css'
 import OrderList from './components/OrderList'
 import ProductList from './components/ProductList'
 
-const App = () => {
+const Home = () => {
   return (
     <>
-    <p>hello</p>
-    <h1>PRODUCTS</h1>
+  <h2>PRODUCTS</h2>
       <ProductList />
-      <h1>ORDERS</h1>
-      <OrderList />
+      {/* <h1>ORDERS</h1>
+      <OrderList /> */}
 
       
     </>
   )
 }
 
-export default App
+export default Home
