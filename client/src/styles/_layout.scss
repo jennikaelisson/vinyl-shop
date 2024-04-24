@@ -1,0 +1,77 @@
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    text-align: center;
+    width: 100%;
+  }
+
+header {
+    //border: 2px solid plum;
+    //width: 100%;
+    min-height: 20dvh;
+
+    img {
+        width: 100%;
+    }
+}
+
+main {
+   // border: 2px solid plum;
+    width: 100%;
+    min-height: 50dvh;
+
+}
+
+footer {
+   // border: 2px solid purple;
+    width: 100%;
+    min-height: 30dvh;
+    //display: flex;
+    //justify-content: center;
+    //gap: 1rem;
+    padding: 2rem;
+
+    .flex {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+    p {
+       
+
+        img {
+            max-width: 2rem;
+        }
+    }
+    #copyright {
+        max-width: 100%;
+    }
+}
+
+
+/* Tablet-stilar */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    header {
+        //border: 2px solid plum;
+        //width: 100%;
+        min-height: 10dvh;
+    
+        img {
+            width: 100%;
+        }
+    }
+}
+  
+  /* Mobil-stilar */
+  @media only screen and (max-width: 767px) {
+    header {
+        //border: 2px solid plum;
+        //width: 100%;
+        min-height: 5dvh;
+    
+        img {
+            width: 100%;
+        }
+    }
+  }

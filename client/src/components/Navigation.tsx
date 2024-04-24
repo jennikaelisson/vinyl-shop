@@ -6,7 +6,9 @@ const Navigation = () => {
       <li>
         <NavLink to={"/"}>Home</NavLink>
       </li>
-      <li>
+      <NavLink to={"/products"}>Products</NavLink>
+
+      {/* <li>
         <NavLink to={"/portfolio"}>Portfolio</NavLink>
       </li>
       <li>
@@ -14,7 +16,7 @@ const Navigation = () => {
       </li>
       <li>
         <NavLink to={"/contact"}>Contact</NavLink>
-      </li>
+      </li> */}
       <li>
         <NavLink to={"/login"}>Login</NavLink>
       </li>

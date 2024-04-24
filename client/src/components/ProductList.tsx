@@ -45,18 +45,19 @@ const ProductList = () => {
   }
 
   return (
-    <div>
+    <div className="grid">
       {products?.length === 0 ? (
         <div>No products available</div>
       ) : (
         products?.map((product: IProduct) => (
-          <div key={product._id}>
-            <h3>{product.artist}</h3>
+          <div key={product._id} className="product-card col-3 col-m-3 col-s-2 col-xs-1">
+            <img src={product.image} alt="Product image" /><h3>{product.artist}</h3>
             <h4>{product.title}</h4>
             {/* Uncomment the following lines if you have image URLs */}
-            <img src={product.image} alt="Product image" />
+            
             <h4>Price: {product.price} kr</h4>
             <p>Release year: {product.releaseYear}</p>
+            <button>Add</button>
           </div>
         ))
       )}

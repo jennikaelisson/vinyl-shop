@@ -4,7 +4,8 @@ import Home from "./Home";
 import Errorpage from "./pages/ErrorPage";
 import Admin from "./pages/Admin";
 import CustomerLogin from "./pages/CustomerLogin";
-import CustomerRegister from "./pages/Register";
+import CustomerRegister from "./pages/CustomerRegister";
+import ProductList from "./components/ProductList";
 
 
 export const router = createBrowserRouter([
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
 			{
 				path: "/admin",
 				element: <Admin />,
+			},
+			{
+				path: "/products",
+				element: <ProductList />,
 			},
 		],
 	},

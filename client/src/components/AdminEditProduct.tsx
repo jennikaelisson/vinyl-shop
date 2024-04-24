@@ -78,7 +78,7 @@ const AdminEditProducts = () => {
         <div>No products available</div>
       ) : (
         products?.map((product: IProduct) => (
-          <div key={product._id}>
+          <div key={product._id} className="product-card">
             {editableProductId === product._id ? (
               <EditProductForm
                 product={product}
@@ -87,9 +87,9 @@ const AdminEditProducts = () => {
               />
             ) : (
               <>
-                <h3>{product.artist}</h3>
+                                <img src={product.image} alt="Product image" />
+<h3>{product.artist}</h3>
                 <h4>{product.title}</h4>
-                <img src={product.image} alt="Product image" />
                 <h4>Price: {product.price} kr</h4>
                 <p>Release year: {product.releaseYear}</p>
                 <button onClick={() => handleEdit(product._id)}>Edit</button>

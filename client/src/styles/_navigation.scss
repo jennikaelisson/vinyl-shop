@@ -1,0 +1,21 @@
+nav {
+    position: sticky;
+    top: 0;
+    background-color: var(--melon); /* Du kan ändra bakgrundsfärgen efter ditt behov */
+    z-index: 100; 
+    font-family: var(--vollkorn);
+    color: var(--rosetaupe2);
+    
+    ul {
+        list-style: none;
+        padding: 5px;
+        display: flex;
+        justify-content: space-between;
+
+        li {
+            .active {
+                border-bottom: 3px dotted var(--rosetaupe2);
+            }
+        }
+    }
+}
