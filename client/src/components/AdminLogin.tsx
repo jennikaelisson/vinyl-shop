@@ -3,7 +3,7 @@ import { useState } from "react";
 interface ILoginProps {
 	handleAdminStatus: (value: boolean) => void;
 }
-const Login = ({ handleAdminStatus }: ILoginProps) => {
+const AdminLogin = ({ handleAdminStatus }: ILoginProps) => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
@@ -65,4 +65,4 @@ const Login = ({ handleAdminStatus }: ILoginProps) => {
 	);
 };
 
-export default Login;
+export default AdminLogin;

@@ -3,6 +3,8 @@ import Layout from "./pages/Layout";
 import Home from "./Home";
 import Errorpage from "./pages/ErrorPage";
 import Admin from "./pages/Admin";
+import CustomerLogin from "./pages/CustomerLogin";
+import CustomerRegister from "./pages/Register";
 
 
 export const router = createBrowserRouter([
@@ -15,14 +17,14 @@ export const router = createBrowserRouter([
 				element: <Home />,
 				index: true,
 			},
-			// {
-			// 	path: "/book",
-			// 	element: <Book />,
-			// },
-			// {
-			// 	path: "/contact",
-			// 	element: <Contact />,
-			// },
+			{
+				path: "/register",
+				element: <CustomerRegister />,
+			},
+			{
+				path: "/login",
+				element: <CustomerLogin />,
+			},
 			{
 				path: "/admin",
 				element: <Admin />,

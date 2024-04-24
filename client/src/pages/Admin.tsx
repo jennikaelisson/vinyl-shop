@@ -1,8 +1,8 @@
 import { useState } from "react";
 import AdminAddProducts from "../components/AdminAddProducts";
-import Login from "../components/Login";
 import AdminEditProducts from "../components/AdminEditProduct";
 import OrderList from "../components/OrderList";
+import AdminLogin from "../components/AdminLogin";
 
 const Admin = () => {
   const [admin, setAdmin] = useState(() => localStorage.getItem("admin") !== null);
@@ -46,7 +46,7 @@ const Admin = () => {
               </button>
             </>
           ) : (
-            <Login handleAdminStatus={handleAdminStatus} />
+            <AdminLogin handleAdminStatus={handleAdminStatus} />
           )}
         </div>
       </main>
