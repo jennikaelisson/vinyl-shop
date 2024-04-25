@@ -7,14 +7,15 @@ import {
   } from "react";
   
   export interface IProduct {
-    id: string;
-    name: string;
-    description: string;
-    images: string[];
-    default_price: {
-      unit_amount: number;
-      id: string;
-    };
+    _id: string;
+    artist: string;
+    title: string;
+    price: number;
+    releaseYear: number;
+    image: string;
+    quantityInStock: number;
+    status: string;
+    category: object;
   }
   
   interface ICartItem {
@@ -49,7 +50,7 @@ import {
       const clonedCart = [...cart];
   
       const productExists = clonedCart.find(
-        (item) => item.product.id === product.id
+        (item) => item.product._id === product._id
       );
   
       if (productExists) {
