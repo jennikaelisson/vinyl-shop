@@ -5,7 +5,9 @@ import Errorpage from "./pages/ErrorPage";
 import Admin from "./pages/Admin";
 import CustomerLogin from "./pages/CustomerLogin";
 import CustomerRegister from "./pages/CustomerRegister";
-import ProductList from "./components/ProductList";
+import ProductList from "./pages/ProductList";
+import SeventiesList from "./pages/SeventiesList";
+import SixtiesList from "./pages/SixtiesList";
 
 
 export const router = createBrowserRouter([
@@ -33,6 +35,15 @@ export const router = createBrowserRouter([
 			{
 				path: "/products",
 				element: <ProductList />,
+			},
+			{
+				path: "/60s",
+				element: <SixtiesList />,
+			},
+			{
+				path: "/70s",
+				element: <SeventiesList
+				 />,
 			},
 		],
 	},
