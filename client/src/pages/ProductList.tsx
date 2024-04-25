@@ -19,6 +19,7 @@ const ProductList = () => {
   const [errors, setErrors] = useState<string | null>(null);
 
   const { addToCart } = useCart();
+  console.log("addToCart function:", addToCart);
 
 
   useEffect(() => {
