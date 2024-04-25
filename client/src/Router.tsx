@@ -8,6 +8,7 @@ import CustomerRegister from "./pages/CustomerRegister";
 import ProductList from "./pages/ProductList";
 import SeventiesList from "./pages/SeventiesList";
 import SixtiesList from "./pages/SixtiesList";
+import Cart from "./pages/Cart";
 
 
 export const router = createBrowserRouter([
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
 			{
 				path: "/70s",
 				element: <SeventiesList
+				 />,
+			},{
+				path: "/cart",
+				element: <Cart
 				 />,
 			},
 		],

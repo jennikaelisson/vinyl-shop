@@ -6,7 +6,7 @@ const Navigation = () => {
       <li>
         <NavLink to={"/"}>Home</NavLink>
       </li>
-      <NavLink to={"/products"}>Products</NavLink>
+      <NavLink to={"/products"}>All products</NavLink>
 
        {/* <li>
         <NavLink to={"/portfolio"}>Portfolio</NavLink>
@@ -18,6 +18,8 @@ const Navigation = () => {
         <NavLink to={"/70s"}>70s</NavLink>
       </li> 
       <li>
+        <NavLink to={"/cart"}>Cart</NavLink>
+      </li><li>
         <NavLink to={"/login"}>Login</NavLink>
       </li>
     </ul>

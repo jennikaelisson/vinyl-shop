@@ -186,6 +186,8 @@ class DatabaseConnection {
 
     return returnArray;
 
+    
+
     // await this.connect();
 
     // let db = this.client.db("webshop");
@@ -247,6 +249,8 @@ class DatabaseConnection {
 
     // return orders;
   }
+
+
 
   async getOrCreateCustomer(email, name, address) {
     //JETODO
