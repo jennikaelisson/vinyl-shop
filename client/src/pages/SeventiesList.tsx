@@ -1,18 +1,25 @@
 import { useEffect, useState } from "react";
 
 interface IProduct {
-    _id: string;
-    artist: string;
-    title: string;
-    price: number;
-    releaseYear: number;
-    image: string;
-    quantityInStock: number;
-    status: string;
-    category: object;
+  _id: string;
+  artist: string;
+  title: string;
+  price: number;
+  releaseYear: number;
+  image: string;
+  quantityInStock: number;
+  status: string;
+  category?: ICategory;
 }
 
-const SeventiesList = () => {
+interface ICategory { 
+  _id: string;
+  name: string;
+  decription: string;
+  childOf: string;
+}
+
+const SixtiesList = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<string | null>(null);
@@ -20,13 +27,14 @@ const SeventiesList = () => {
   useEffect(() => {
     const gatherProducts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/products");
+        const response = await fetch("http://localhost:3000/products/");
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
         const data = await response.json();
         console.log(data);
-        setProducts(data);
+        const filteredProducts = data.filter((product: IProduct) => product.category?.childOf === "6623d2efd3d9dfb5c2677af9");
+        setProducts(filteredProducts);
       } catch (error) {
         setErrors(errors);
       } finally {
@@ -50,11 +58,13 @@ const SeventiesList = () => {
         <div>No products available</div>
       ) : (
         products?.map((product: IProduct) => (
-          <div key={product._id} className="product-card col-3 col-m-3 col-s-2 col-xs-1">
-            <img src={product.image} alt="Product image" /><h3>{product.artist}</h3>
-            <h4>{product.title}</h4>
-            {/* Uncomment the following lines if you have image URLs */}
-            
+          <div
+            key={product._id}
+            className="product-card col-3 col-m-3 col-s-2 col-xs-1"
+          >
+            <img src={product.image} alt="Product image" />
+            <h3>{product.artist}</h3>
+            <h4>{product.category ? product.category.childOf : "Unknown Category"}</h4>
             <h4>Price: {product.price} kr</h4>
             <p>Release year: {product.releaseYear}</p>
             <button>Add</button>
@@ -65,4 +75,4 @@ const SeventiesList = () => {
   );
 };
 
-export default SeventiesList;
+export default SixtiesList;

@@ -33,7 +33,7 @@ const SixtiesList = () => {
         }
         const data = await response.json();
         console.log(data);
-        const filteredProducts = data.filter((product: IProduct) => product.category?.childOf === "6623d2efd3d9dfb5c2677af9");
+        const filteredProducts = data.filter((product: IProduct) => product.category?.childOf === "662a1455d3d9dfb5c2677b2a");
         setProducts(filteredProducts);
       } catch (error) {
         setErrors(errors);
