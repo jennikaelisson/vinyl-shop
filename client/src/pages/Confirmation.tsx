@@ -43,7 +43,9 @@ const Confirmation = () => {
 
 
     return <>
-    {verified && !isLoading ? "Tack för ditt köp" : "Laddar..."}</>
+    {/* {verified && !isLoading ? "Tack för ditt köp" : "Laddar..."}</> */}
+<h1>TACK FÖR DITT KÖP</h1>
+</>
 }
 
 export default Confirmation;

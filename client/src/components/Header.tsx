@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useCart } from "../Context/CartContext";
 import Navigation from "./Navigation";
 
+import headerImage from "../images/header.png"; 
+
 const Header = () => {
     const {cart} = useCart();
 
@@ -13,7 +15,7 @@ const Header = () => {
 						>
 Cart						</Link> {cart.length}</p>
         </div>
- <h1>VINYL</h1><Navigation />
+<img src={headerImage} alt="Header logo" /><Navigation />
         </div>
 }
 

@@ -36,6 +36,18 @@ app.post("/create-new-order", async (request, response) => {
   response.json({ id: orderId });
 });
 
+app.post("/create-customer", async (request, response) => {
+  // JETODO - ej klar
+  
+  let customerId = await DatabaseConnection.getInstance().getOrCreateCustomer(
+    request.body.name,
+    request.body.email,
+    request.body.password,
+  );
+
+  response.json({ id: customerId });
+});
+
 app.post("/products", async (request, response) => {
   // JETODO - ej klar
   let id = await DatabaseConnection.getInstance().createProduct();

@@ -56,7 +56,8 @@ const ProductList = () => {
       ) : (
         products?.map((product: IProduct) => (
           <div key={product._id} className="product-card col-3 col-m-3 col-s-2 col-xs-1">
-            <img src={product.image} alt="Product image" /><h3>{product.artist}</h3>
+            <img src={product.image} alt={product.artist} />
+            <h3>{product.artist}</h3>
             <h4>{product.title}</h4>
             
             <h4>Price: {product.price} kr</h4>

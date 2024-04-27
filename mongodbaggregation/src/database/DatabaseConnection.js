@@ -53,6 +53,25 @@ class DatabaseConnection {
     return result.insertedId;
   }
 
+  async getOrCreateCustomer(email, name, password) {
+    //JETODO
+
+    await this.connect();
+
+    let db = this.client.db("webshop");
+    let collection = db.collection("customers");
+
+    let result = await collection.insertOne({
+      email: "j@gmail.comm",
+      name: "josef",
+      password: "pass",
+
+    }); 
+
+    console.log(result.insertedId);
+    return result.insertedId;   
+  }
+
   async createProduct() {
     await this.connect();
 
@@ -251,12 +270,6 @@ class DatabaseConnection {
   }
 
 
-
-  async getOrCreateCustomer(email, name, address) {
-    //JETODO
-
-    return { id: 24442 };
-  }
 
   async getOrder(lineItems, customer) {
     // JETOTO

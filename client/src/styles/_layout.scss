@@ -7,47 +7,101 @@
   }
 
 header {
-    //border: 2px solid plum;
-    //width: 100%;
-    min-height: 20dvh;
-
-    img {
-        width: 100%;
-    }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--melon);
+    z-index: 100;
+    font-family: var(--vollkorn);
+    color: var(--rosetaupe2);
+    min-height: 5dvh;
+img {
+    max-height: 30dvh;
+}
+  
 }
 
 main {
    // border: 2px solid plum;
+   padding-top: 30dvh; /* Samma höjd som header-elementet */
     width: 100%;
     min-height: 50dvh;
 
 }
 
 footer {
-   // border: 2px solid purple;
-    width: 100%;
-    min-height: 30dvh;
-    //display: flex;
-    //justify-content: center;
-    //gap: 1rem;
-    padding: 2rem;
+   
+    padding: 2rem 0;
+}
 
-    .flex {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-    }
-    p {
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 1rem;
+}
+
+.footer-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.footer-section p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.social-media-icons {
+    display: flex;
+}
+
+.social-media-icons a {
+    margin-right: 1rem;
+}
+
+.social-media-icons img {
+    width: 30px;
+    height: 30px;
+}
+
+.copyright {
+    text-align: center;
+    padding: 1rem 0;
+}
+
+
+// footer {
+//    // border: 2px solid purple;
+//     width: 100%;
+//     min-height: 30dvh;
+//     //display: flex;
+//     //justify-content: center;
+//     //gap: 1rem;
+//     padding: 2rem;
+
+//     .flex {
+//         display: flex;
+//         justify-content: center;
+//         gap: 1rem;
+//     }
+//     p {
        
 
-        img {
-            max-width: 2rem;
-        }
-    }
-    #copyright {
-        max-width: 100%;
-    }
-}
+//         img {
+//             max-width: 2rem;
+//         }
+//     }
+//     #copyright {
+//         max-width: 100%;
+//     }
+// }
 
 
 /* Tablet-stilar */

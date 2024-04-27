@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
+import hImage from "../images/Contact.png";
 
 const Navigation = () => {
     return <> <nav>
     <ul>
       <li>
-        <NavLink to={"/"}>Home</NavLink>
+        <NavLink to={"/"}><img src={homeImage} alt="Home" /></NavLink>
       </li>
       <NavLink to={"/products"}>All products</NavLink>
 
@@ -17,9 +18,8 @@ const Navigation = () => {
       <li>
         <NavLink to={"/70s"}>70s</NavLink>
       </li> 
+      
       <li>
-        <NavLink to={"/cart"}>Cart</NavLink>
-      </li><li>
         <NavLink to={"/login"}>Login</NavLink>
       </li>
     </ul>

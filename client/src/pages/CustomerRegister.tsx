@@ -4,11 +4,10 @@ const CustomerRegister = () => {
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
     const [nameInput, setNameInput] = useState("");
-  
 
     const register = async (e: FormEvent) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:3000/api/auth/register", { // JETODO vilken url?
+        const response = await fetch("http://localhost:3000/create-customer", { 
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -22,14 +21,17 @@ const CustomerRegister = () => {
 
       const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setNameInput(e.target.value);
+        console.log(nameInput);
       }
     
       const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         setEmailInput(e.target.value);
+        console.log(emailInput);
       };
     
       const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPasswordInput(e.target.value);
+        setPasswordInput(e.target.value);        
+        console.log(passwordInput);
       };
       
     return <><form onSubmit={register}>
