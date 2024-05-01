@@ -22,22 +22,22 @@ class DatabaseConnection {
     }
   }
 
-  async saveOrder(lineItems, customer) {
+  async saveOrder(lineItems, customerId) {
     await this.connect();
-
+  
     let db = this.client.db("webshop");
     let collection = db.collection("orders");
-
+  
     let result = await collection.insertOne({
-      customer: customer,
+      customer: customerId,
       totalPrice: 0,
       orderDate: new Date(),
       paymentId: null,
       status: "unpaid",
     }); // JETODO calcualate totalPrice
-
+  
     let orderId = result.insertedId;
-
+  
     let encodedLineItems = lineItems.map((lineItem) => {
       return {
         quantity: lineItem["quantity"],
@@ -46,34 +46,147 @@ class DatabaseConnection {
         product: new mongodb.ObjectId(lineItem["product"]),
       };
     });
-
+  
     let lineItemsCollection = db.collection("lineItems");
     await lineItemsCollection.insertMany(encodedLineItems);
-
-    return result.insertedId;
+  
+    return orderId;
   }
-
+  
+  // Uppdaterad getOrCreateCustomer-funktion för att skapa eller hämta en kund
   async getOrCreateCustomer(email, firstName, lastName, address) {
-    //JETODO
-
     await this.connect();
-
+  
     let db = this.client.db("webshop");
     let collection = db.collection("customers");
-
-    let result = await collection.insertOne({
-      "_id": email,
-      "firstName": firstName,
-      "lastName": lastName,
-      "address": {
-        "street": address.street,
-        "city": address.city
-      }
-    }); 
-
-    console.log(result.insertedId);
-    return result.insertedId;   
+  
+    let existingCustomer = await collection.findOne({ "_id": email });
+  
+    if (existingCustomer) {
+      return existingCustomer._id;
+    } else {
+      let result = await collection.insertOne({
+        "_id": email,
+        "firstName": firstName,
+        "lastName": lastName,
+        "address": {
+          "street": address.street,
+          "city": address.city
+        }
+      }); 
+  
+      return result.insertedId;
+    }
   }
+  
+
+
+
+  // ORIGINAL 
+  // async saveOrder(lineItems, customer) {
+  //   await this.connect();
+
+  //   let db = this.client.db("webshop");
+  //   let collection = db.collection("orders");
+
+  //   let result = await collection.insertOne({
+  //     customer: customer,
+  //     totalPrice: 0,
+  //     orderDate: new Date(),
+  //     paymentId: null,
+  //     status: "unpaid",
+  //   }); // JETODO calcualate totalPrice
+
+  //   let orderId = result.insertedId;
+
+  //   let encodedLineItems = lineItems.map((lineItem) => {
+  //     return {
+  //       quantity: lineItem["quantity"],
+  //       totalPrice: 0, // JETODO calculate
+  //       order: new mongodb.ObjectId(orderId),
+  //       product: new mongodb.ObjectId(lineItem["product"]),
+  //     };
+  //   });
+
+  //   let lineItemsCollection = db.collection("lineItems");
+  //   await lineItemsCollection.insertMany(encodedLineItems);
+
+  //   return result.insertedId;
+  // }
+
+
+
+  
+// TOTAL PRICE???
+//   async saveOrder(lineItems, customer) {
+//     await this.connect();
+
+//     let db = this.client.db("webshop");
+//     let collection = db.collection("orders");
+
+//     // Beräkna totalpriset för ordern
+//     let totalPrice = 0;
+//     for (let i = 0; i < lineItems.length; i++) {
+//         let quantity = lineItems[i].quantity;
+//         let price = lineItems[i].price;
+
+//         console.log("Quantity:", quantity);
+//         console.log("Price:", price);
+
+//         totalPrice += quantity * price;
+//     }
+
+//     console.log("TotalPrice:", totalPrice);
+
+//     let result = await collection.insertOne({
+//       customer: customer,
+//       totalPrice: totalPrice,
+//       orderDate: new Date(),
+//       paymentId: null,
+//       status: "unpaid",
+//     });
+
+//     let orderId = result.insertedId;
+
+//     let encodedLineItems = lineItems.map((lineItem) => {
+//       return {
+//         quantity: lineItem.quantity,
+//         totalPrice: lineItem.quantity * lineItem.price,
+//         order: new mongodb.ObjectId(orderId),
+//         product: new mongodb.ObjectId(lineItem.product),
+//       };
+//     });
+
+//     let lineItemsCollection = db.collection("lineItems");
+//     await lineItemsCollection.insertMany(encodedLineItems);
+
+//     return result.insertedId;
+// }
+
+
+
+// ORIGINAL 
+  // async getOrCreateCustomer(email, firstName, lastName, address) {
+  //   //JETODO
+
+  //   await this.connect();
+
+  //   let db = this.client.db("webshop");
+  //   let collection = db.collection("customers");
+
+  //   let result = await collection.insertOne({
+  //     "_id": email,
+  //     "firstName": firstName,
+  //     "lastName": lastName,
+  //     "address": {
+  //       "street": address.street,
+  //       "city": address.city
+  //     }
+  //   }); 
+
+  //   console.log(result.insertedId);
+  //   return result.insertedId;   
+  // }
 
   async createProduct() {
     await this.connect();

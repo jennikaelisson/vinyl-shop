@@ -25,15 +25,43 @@ app.get("/products", async (request, response) => {
   response.json(products);
 });
 
-app.post("/create-new-order", async (request, response) => {
-  // JETODO - ej klar
-  // JETODO create customer
-  let orderId = await DatabaseConnection.getInstance().saveOrder(
-    request.body.lineItems,
-    request.body.email
+// app.post("/create-new-order", async (request, response) => {
+//   // JETODO - ej klar
+//   // JETODO create customer
+//   let orderId = await DatabaseConnection.getInstance().saveOrder(
+//     request.body.lineItems,
+//     request.body.email
+//   );
+//   response.json({ id: orderId });
+// });
+
+async function createOrderAndCustomer(lineItems, customerInfo) {
+  let customerId = await DatabaseConnection.getInstance().getOrCreateCustomer(
+    customerInfo.email,
+    customerInfo.firstName,
+    customerInfo.lastName,
+    customerInfo.address
   );
 
-  response.json({ id: orderId });
+  let orderId = await DatabaseConnection.getInstance().saveOrder(
+    lineItems,
+    customerId
+  );
+
+  return { orderId, customerId };
+}
+
+
+app.post("/create-new-order", async (request, response) => {
+  try {
+    let { orderId } = await createOrderAndCustomer(
+      request.body.lineItems,
+      request.body.customer
+    );
+    response.json({ id: orderId });
+  } catch (error) {
+    response.status(500).json({ error: error.message });
+  }
 });
 
 app.post("/create-customer", async (request, response) => {
