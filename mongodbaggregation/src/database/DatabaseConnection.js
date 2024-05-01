@@ -53,6 +53,28 @@ class DatabaseConnection {
     return result.insertedId;
   }
 
+  async getOrCreateCustomer(email, firstName, lastName, address) {
+    //JETODO
+
+    await this.connect();
+
+    let db = this.client.db("webshop");
+    let collection = db.collection("customers");
+
+    let result = await collection.insertOne({
+      "_id": email,
+      "firstName": firstName,
+      "lastName": lastName,
+      "address": {
+        "street": address.street,
+        "city": address.city
+      }
+    }); 
+
+    console.log(result.insertedId);
+    return result.insertedId;   
+  }
+
   async createProduct() {
     await this.connect();
 
@@ -250,15 +272,28 @@ class DatabaseConnection {
     // return orders;
   }
 
+  async getActiveProducts() {
+    await this.connect();
 
+    let db = this.client.db("webshop");
+    let collection = db.collection("products");
 
-  async getOrCreateCustomer(email, name, address) {
-    //JETODO
+    let products = await collection.find({"status": "Active"}).toArray();
 
-    return { id: 24442 };
+    return products;
   }
 
-  async getOrder(lineItems, customer) {
+async setOrderAsPaid(id) {
+  await this.connect();
+
+  let db = this.client.db("webshop");
+  let collection = db.collection("orders");
+
+  await collection.updateOne({"_id": new mongodb.ObjectId(id)}, {$set : {"status": "paid"}})
+}
+
+
+async getOrder(lineItems, customer) {
     // JETOTO
 
     return { id: "order36476586" };

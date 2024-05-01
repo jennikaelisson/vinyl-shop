@@ -36,6 +36,19 @@ app.post("/create-new-order", async (request, response) => {
   response.json({ id: orderId });
 });
 
+app.post("/create-customer", async (request, response) => {
+  // JETODO - ej klar
+  
+  let customerId = await DatabaseConnection.getInstance().getOrCreateCustomer(
+    request.body.email,
+    request.body.firstName,
+    request.body.lastName,
+    request.body.address
+  );
+
+  response.json({ id: customerId });
+});
+
 app.post("/products", async (request, response) => {
   // JETODO - ej klar
   let id = await DatabaseConnection.getInstance().createProduct();
@@ -45,7 +58,7 @@ app.post("/products", async (request, response) => {
 });
 
 app.post("/products/:id", async (request, response) => {
-  // JETODO - ej klar
+  // JETODO - ej klar - in future: check if user is allowed to edit
   await DatabaseConnection.getInstance().updateProduct(
     request.params.id,
     request.body
@@ -53,6 +66,28 @@ app.post("/products/:id", async (request, response) => {
 
   response.json({ id: request.params.id });
 });
+
+app.get("/active-products", async (request, response) => {
+  let products = await DatabaseConnection.getInstance().getActiveProducts();
+
+  response.json(products);
+})
+
+app.post("/complete-order/:id", async (request, response) => {
+
+  //JETODO check that payment has been made - för vg
+  let isPaid = true; // JEDEBUG: always true
+
+  if (isPaid) {
+    // JETODO mark order as paid
+    await DatabaseConnection.getInstance().setOrderAsPaid(request.params.id);
+  } else {
+// not necessary
+  }
+
+
+  response.json({"paid": isPaid});
+})
 
 // app.post("/create-new-order", async (request, response) => { // JETODO - ej klar
 //   let customer = await DatabaseConnection.getInstance().getOrCreateCustomer(

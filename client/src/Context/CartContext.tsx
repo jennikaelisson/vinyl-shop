@@ -15,10 +15,17 @@ import {
     image: string;
     quantityInStock: number;
     status: string;
-    category: object;
+    category: ICategory;
+  }
+
+  interface ICategory { 
+    _id: string;
+    name: string;
+    decription: string;
+    childOf: string;
   }
   
-  interface ICartItem {
+  export interface ICartItem {
     product: IProduct;
     quantity: number;
   }

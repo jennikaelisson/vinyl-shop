@@ -1,0 +1,28 @@
+.order-list-container {
+    margin: 20px;
+  }
+  
+  .order-item {
+    border: 1px solid var(--rosetaupe2);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .customer-details {
+    margin-bottom: 10px;
+  }
+  
+  .line-items {
+    margin-top: 20px;
+  }
+  
+  .line-item {
+    border-top: 1px solid var(--lightcoral);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .line-item:last-child {
+    margin-bottom: 0;
+  }
+  

@@ -145,7 +145,7 @@
   body {
     margin: 0;
     display: flex;
-    place-items: center;
+    // place-items: center;
     min-width: 320px;
     min-height: 100vh;
     font-family: var(--vollkorn);
@@ -196,6 +196,18 @@
     padding: 10px;
     margin: 0;
 
+    h3 {
+      margin: 5px;
+    }
+    h4 {
+      margin: 4px;
+    }
+    p {
+      margin: 4px;
+    }
+button {
+  padding: 7px;
+}
 
     img {
       max-width: 40dvh;
@@ -213,4 +225,35 @@
   
   .align-right {
     text-align: right;
+  }
+
+  .align-left {
+    text-align: left;
+  }
+
+  #root {
+    position: sticky;
+    top: 0;
+  }
+
+  @media only screen and (max-width: 686px) {
+    #root {
+      //border: 2px solid plum;
+      //width: 100%;
+      padding: 0;
+  
+      
+    }
+  }
+
+  .retro-buttons {
+    max-height: 40px;
+  }
+
+  .no-margin {
+    margin: 0;
+  }
+
+  .no-padding-btm {
+    padding-bottom: 0;
   }

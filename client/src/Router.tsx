@@ -9,6 +9,7 @@ import ProductList from "./pages/ProductList";
 import SeventiesList from "./pages/SeventiesList";
 import SixtiesList from "./pages/SixtiesList";
 import Cart from "./pages/Cart";
+import Confirmation from "./pages/Confirmation";
 
 
 export const router = createBrowserRouter([
@@ -48,6 +49,11 @@ export const router = createBrowserRouter([
 			},{
 				path: "/cart",
 				element: <Cart
+				 />,
+			},
+			{
+				path: "/confirmation",
+				element: <Confirmation
 				 />,
 			},
 		],

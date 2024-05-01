@@ -1,28 +1,31 @@
 import { useEffect, useState } from "react";
+import { IProduct, useCart } from "../Context/CartContext";
 
-interface IProduct {
-  _id: string;
-  artist: string;
-  title: string;
-  price: number;
-  releaseYear: number;
-  image: string;
-  quantityInStock: number;
-  status: string;
-  category?: ICategory;
-}
+// interface IProduct {
+//   _id: string;
+//   artist: string;
+//   title: string;
+//   price: number;
+//   releaseYear: number;
+//   image: string;
+//   quantityInStock: number;
+//   status: string;
+//   category?: ICategory;
+// }
 
-interface ICategory { 
-  _id: string;
-  name: string;
-  decription: string;
-  childOf: string;
-}
+// interface ICategory { 
+//   _id: string;
+//   name: string;
+//   decription: string;
+//   childOf: string;
+// }
 
 const SixtiesList = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<string | null>(null);
+
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const gatherProducts = async () => {
@@ -52,6 +55,11 @@ const SixtiesList = () => {
     return <div>Error: {errors}</div>;
   }
 
+  const handleAddToCart = (product: IProduct) => {
+    console.log("Adding product to cart:", product);
+    addToCart(product);
+  };
+
   return (
     <div className="grid">
       {products?.length === 0 ? (
@@ -67,7 +75,9 @@ const SixtiesList = () => {
             <h4>{product.category ? product.category.childOf : "Unknown Category"}</h4>
             <h4>Price: {product.price} kr</h4>
             <p>Release year: {product.releaseYear}</p>
-            <button>Add</button>
+            <button onClick={() => handleAddToCart(product)}>
+              Add to cart
+            </button>
           </div>
         ))
       )}

@@ -1,20 +1,28 @@
 import { Link } from "react-router-dom";
-import { useCart } from "../Context/CartContext";
 import Navigation from "./Navigation";
 
-const Header = () => {
-    const {cart} = useCart();
+import headerImage from "../images/banner2.png";
+import cartImage from "../images/Cart.png";
 
-    return <div>
-               <div>
-                <p className="align-right"><Link
-							to="/cart"
-							className="btn button link-color d-none d-md-inline"
-						>
-Cart						</Link> {cart.length}</p>
-        </div>
- <h1>VINYL</h1><Navigation />
-        </div>
-}
+
+const Header = () => {
+//   const { cart } = useCart();
+
+  return (
+    <>
+      
+      <div>
+        <p className="align-right no-margin">
+          <Link to="/cart" className="btn button link-color d-none d-md-inline">
+          <img src={cartImage} alt="Cart" className="retro-buttons"/>
+          </Link>
+          {/* {cart.length} */}
+        </p>
+      </div>
+      <Link to={"/"}><img src={headerImage} alt="Header logo" /></Link>
+      <Navigation />
+    </>
+  );
+};
 
 export default Header;

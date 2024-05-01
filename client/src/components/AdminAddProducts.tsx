@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 const AdminAddProducts = () => {
   const [formData, setFormData] = useState({
@@ -11,23 +11,40 @@ const AdminAddProducts = () => {
     category: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  
+    // Kontrollera om fältet är numeriskt
+    const isNumericField = ['price', 'releaseYear', 'quantityInStock'].includes(name);
+  
+    // Konvertera värdena till nummer om fältet är numeriskt, annars behåll det som sträng
+    const newValue = isNumericField ? Number(value) : value;
+  
+    // Använd en callback-funktion med setFormData för att uppdatera det nya tillståndet
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: newValue,
+    }));
   };
+  
+  
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      const convertedData = {
+        ...formData,
+        price: parseFloat(formData.price),
+        releaseYear: parseInt(formData.releaseYear),
+        quantityInStock: parseInt(formData.quantityInStock),
+      };
+
       const response = await fetch("http://localhost:3000/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(convertedData),
       });
       if (!response.ok) {
         throw new Error("Failed to add product");
