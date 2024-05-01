@@ -1,21 +1,35 @@
 import { useEffect, useState } from "react";
+import { IProduct } from "../Context/CartContext";
 
 interface IOrder {
-    _id: string;
-    totalPrice: number;
-    orderDate: string;
-    paymentId: string;
-    status: string;
-    lineItems: ILineItems[];
+  _id: string;
+  totalPrice: number;
+  orderDate: string;
+  paymentId: string;
+  status: string;
+  customer: ICustomer;
+  lineItems: ILineItems[];
+}
+
+interface ICustomer {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  address: {
+    street: string;
+    city: string;
+  };
 }
 
 interface ILineItems {
-    _id: string;
-    orderId: string;
-    quantity: number;
-    product: string;
-    totalPrice: number; 
+  _id: string;
+  orderId: string;
+  quantity: number;
+  product: IProduct;
+  totalPrice: number;
 }
+
+
 
 const OrderList = () => {
   const [orders, setOrders] = useState<IOrder[]>([]);
@@ -50,18 +64,29 @@ const OrderList = () => {
   }
 
   return (
-    <div>
+    <div className="grid">
       {orders?.length === 0 ? (
         <div>No orders available</div>
       ) : (
-        orders?.map((order: IOrder) => (
-          <div key={order._id}>
-            <h3>Confirmation number {order._id}</h3>
+        orders.map((order) => (
+          <div key={order._id} className="order-item col-3 align-left">
+            <h2>Confirmation number: {order._id}</h2>
             <h4>Total amount: {order.totalPrice} kr</h4>
-            {/* Uncomment the following lines if you have image URLs */}
-            {/* <img src={product.image} alt="Product image" /> */}
-            <h4>Date: {order.orderDate} </h4>
+            <div className="customer-details">
+              <h3>Name: {order.customer?.firstName} {order.customer?.lastName}</h3>
+              <p>Address: {order.customer?.address.street}, {order.customer?.address.city}</p>
+            </div>
+            <h4>Order date: {order.orderDate} </h4>
             <p>Delivery status: {order.status}</p>
+            <div className="line-items">
+              <h3>Products:</h3>
+              {order.lineItems.map((lineItem) => (
+                <li key={lineItem._id} className="line-item">
+                  <h4>{lineItem.product.artist} - {lineItem.product.title}</h4>
+                  <p>Price: {lineItem.product.price} kr</p>
+                </li>
+              ))}
+            </div>
           </div>
         ))
       )}

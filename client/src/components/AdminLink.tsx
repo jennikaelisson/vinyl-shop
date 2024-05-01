@@ -42,7 +42,7 @@ const AdminLoginLink = () => {
     const [showAdminLogin, setShowAdminLogin] = useState(false);
 
     useLayoutEffect(() => {
-        let timeoutId;
+        let timeoutId: number | undefined;
 
         const handleScroll = () => {
             const scrollPosition = window.scrollY;
