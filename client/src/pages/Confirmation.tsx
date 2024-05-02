@@ -1,51 +1,54 @@
-import { useEffect, useState } from "react";
+
+
+import { useState } from "react";
 
 const Confirmation = () => {
-    const [verified, setVerified] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+  const [verified, setVerified] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        if (!verified) {
-            console.log("nu körs jag!");
-            const verifySession = async () => {
-                console.log("och jag går in i funktionen");
-                let sessionId;
-                const dataFromLS = localStorage.getItem("sessionId");
-                console.log(dataFromLS);
-                
+  const handleVerifySession = async () => {
+    setIsLoading(true); // Sätt isLoading till true när du börjar verifiera sessionen
 
-                if (dataFromLS) {
-                    sessionId = JSON.parse(dataFromLS);
-                    console.log(sessionId)
-                }
-                
-                const response = await fetch("http://localhost:3000/", { // JETODO vilken url?
-                method: "POST",    
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify({ sessionId })
-                })
-                console.log(response);
-                
-                const data = await response.json();
-                console.log(data);
-                
+    const dataFromLS = localStorage.getItem("orderId");
+    console.log(dataFromLS);
 
-                if (response.ok) {
-                    setVerified(data.verified)
-                    setIsLoading(false)
-                }
-            }
-            verifySession()
-        }
-    }, [verified])
+    if (dataFromLS) {
+      const orderId = JSON.parse(dataFromLS);
+console.log(dataFromLS);
+console.log(orderId);
 
+   
+    const response = await fetch(`http://localhost:3000/complete-order/${orderId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        
+      });
+      const data = await response.json();
 
-    return <>
-    {/* {verified && !isLoading ? "Tack för ditt köp" : "Laddar..."}</> */}
-<h1>TACK FÖR DITT KÖP</h1>
-</>
-}
+      if (response.ok) {
+        setVerified(data.verified);
+      }
+    }
+
+    setIsLoading(false); // Sätt isLoading till false när verifieringen är klar
+  };
+
+  return (
+    <>
+      {verified && !isLoading ? (
+        <p>Tack för ditt köp</p>
+      ) : (
+        <>
+          <button onClick={handleVerifySession} disabled={isLoading}>
+            {isLoading ? "Verifierar..." : "Pay"}
+          </button>
+          {isLoading && <p>Laddar...</p>}
+        </>
+      )}
+    </>
+  );
+};
 
 export default Confirmation;
