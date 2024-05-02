@@ -12,7 +12,7 @@ let app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded());
+app.use(express.urlencoded()); 
 
 app.get("/orders", async (request, response) => {
   let orders = await DatabaseConnection.getInstance().getAllOrders();

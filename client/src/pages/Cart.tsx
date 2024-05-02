@@ -1,8 +1,10 @@
 import { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCart, ICartItem } from "../Context/CartContext";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const { cart } = useCart();
   const [customer, setCustomer] = useState({
     email: "",
@@ -10,26 +12,26 @@ const Cart = () => {
     lastName: "",
     address: {
       street: "",
-      city: ""
-    }
+      city: "",
+    },
   });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCustomer(prevState => ({
+    setCustomer((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleAddressChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCustomer(prevState => ({
+    setCustomer((prevState) => ({
       ...prevState,
       address: {
         ...prevState.address,
-        [name]: value
-      }
+        [name]: value,
+      },
     }));
   };
 
@@ -41,22 +43,23 @@ const Cart = () => {
 
     console.log(customer);
     console.log(lineItems);
-    
 
     const response = await fetch("http://localhost:3000/create-new-order", {
       method: "POST",
       headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
       },
       body: JSON.stringify({
         customer,
-        lineItems}
-      )
+        lineItems,
+      }),
     });
 
     const data = await response.json();
-console.log(data);
-
+    console.log(data);
+    localStorage.setItem("orderId", JSON.stringify(data.id)); // Sparar orderns ID i localStorage
+    console.log(localStorage.getItem("orderId"));
+    navigate("/confirmation"); // Navigera till bekräftelsessidan
   };
 
   return (
@@ -91,7 +94,6 @@ console.log(data);
                 placeholder="id"
                 value={customer.email}
                 onChange={handleInputChange}
-                
               />
               <br />
               <input
@@ -126,14 +128,14 @@ console.log(data);
                 onChange={handleAddressChange}
               />
             </div>
-            {/* <Link
+            <Link
               to="/confirmation"
               className="link-color d-none d-md-inline"
               onClick={handlePayment}
             >
-              Pay
-            </Link> */}
-            <button onClick={handlePayment}>KÖP</button>
+              To payment
+            </Link>
+            {/* <button onClick={handlePayment}>KÖP</button> */}
           </>
         )}
       </div>
@@ -142,4 +144,3 @@ console.log(data);
 };
 
 export default Cart;
-
