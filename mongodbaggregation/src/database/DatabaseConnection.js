@@ -82,40 +82,6 @@ class DatabaseConnection {
 
 
 
-  // ORIGINAL 
-  // async saveOrder(lineItems, customer) {
-  //   await this.connect();
-
-  //   let db = this.client.db("webshop");
-  //   let collection = db.collection("orders");
-
-  //   let result = await collection.insertOne({
-  //     customer: customer,
-  //     totalPrice: 0,
-  //     orderDate: new Date(),
-  //     paymentId: null,
-  //     status: "unpaid",
-  //   }); // JETODO calcualate totalPrice
-
-  //   let orderId = result.insertedId;
-
-  //   let encodedLineItems = lineItems.map((lineItem) => {
-  //     return {
-  //       quantity: lineItem["quantity"],
-  //       totalPrice: 0, // JETODO calculate
-  //       order: new mongodb.ObjectId(orderId),
-  //       product: new mongodb.ObjectId(lineItem["product"]),
-  //     };
-  //   });
-
-  //   let lineItemsCollection = db.collection("lineItems");
-  //   await lineItemsCollection.insertMany(encodedLineItems);
-
-  //   return result.insertedId;
-  // }
-
-
-
   
 // TOTAL PRICE???
 //   async saveOrder(lineItems, customer) {
@@ -164,29 +130,6 @@ class DatabaseConnection {
 // }
 
 
-
-// ORIGINAL 
-  // async getOrCreateCustomer(email, firstName, lastName, address) {
-  //   //JETODO
-
-  //   await this.connect();
-
-  //   let db = this.client.db("webshop");
-  //   let collection = db.collection("customers");
-
-  //   let result = await collection.insertOne({
-  //     "_id": email,
-  //     "firstName": firstName,
-  //     "lastName": lastName,
-  //     "address": {
-  //       "street": address.street,
-  //       "city": address.city
-  //     }
-  //   }); 
-
-  //   console.log(result.insertedId);
-  //   return result.insertedId;   
-  // }
 
   async createProduct() {
     await this.connect();
@@ -320,69 +263,6 @@ class DatabaseConnection {
     }
 
     return returnArray;
-
-    
-
-    // await this.connect();
-
-    // let db = this.client.db("webshop");
-    // let collection = db.collection("orders");
-
-    // let pipeline = [
-    //   {
-    //     $lookup: {
-    //       from: "lineItems",
-    //       localField: "orderId",
-    //       foreignField: "id",
-    //       as: "lineItems",
-    //       pipeline: [
-    //         {
-    //           $lookup: {
-    //             from: "products",
-    //             localField: "id",
-    //             foreignField: "product",
-    //             as: "linkedProduct",
-    //           },
-    //         },
-    //         {
-    //           $addFields: {
-    //             linkedProduct: {
-    //               $first: "$linkedProduct",
-    //             },
-    //           },
-    //         },
-    //       ],
-    //     },
-    //   },
-    //   {
-    //     $lookup: {
-    //       from: "customers",
-    //       localField: "id",
-    //       foreignField: "customer",
-    //       as: "linkedCustomer",
-    //     },
-    //   },
-    //   {
-    //     $addFields: {
-    //       linkedCustomer: {
-    //         $first: "$linkedCustomer",
-    //       },
-    //       calculatedTotal: {
-    //         $sum: "$lineItems.totalPrice",
-    //       },
-    //     },
-    //   },
-    // ];
-
-    // let aggregate = collection.aggregate(pipeline);
-
-    // let orders = [];
-
-    // for await (let document of aggregate) {
-    //   orders.push(document);
-    // }
-
-    // return orders;
   }
 
   async getActiveProducts() {
